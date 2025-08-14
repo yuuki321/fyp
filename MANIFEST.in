@@ -1,0 +1,11 @@
+include app/static/css/*.css
+include app/static/js/*.js
+include app/static/img/*
+include app/static/soundfonts/**/*
+include app/templates/**/*
+include app/translations/**/*
+include migrations/**/*
+include requirements.txt
+include .env.example
+include README.md
+include LICENSE 

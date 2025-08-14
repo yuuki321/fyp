@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">{{ _('Create New Project') }}</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('main.create_project') }}">
+                <div class="mb-3">
+                    <label for="name" class="form-label">{{ _('Project Name') }} *</label>
+                    <input type="text" class="form-control" id="name" name="name" required 
+                           placeholder="{{ _('Enter a name for your project') }}">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">{{ _('Description') }}</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"
+                              placeholder="{{ _('Describe your project (optional)') }}"></textarea>
+                </div>
+                <div class="text-end">
+                    <a href="{{ url_for('main.projects') }}" class="btn btn-secondary me-2">
+                        {{ _('Cancel') }}
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> {{ _('Create Project') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

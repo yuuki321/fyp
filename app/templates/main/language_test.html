@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2>{{ _('Language Test Page') }}</h2>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <strong>{{ _('Current Language') }}:</strong> {{ get_locale() }}
+                    </div>
+                    
+                    <!-- 显示会话信息 -->
+                    <div class="alert alert-secondary">
+                        <strong>会话信息:</strong><br>
+                        <pre>{{ session }}</pre>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5>{{ _('Basic Translation Test') }}</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">{{ _('Hello World') }}</li>
+                            <li class="list-group-item">{{ _('Home') }}</li>
+                            <li class="list-group-item">{{ _('My Projects') }}</li>
+                            <li class="list-group-item">{{ _('Login') }}</li>
+                            <li class="list-group-item">{{ _('Register') }}</li>
+                            <li class="list-group-item">{{ _('Logout') }}</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5>{{ _('Language Switcher') }}</h5>
+                        <div class="d-flex gap-2 mb-3">
+                            <a href="{{ url_for('main.switch_language', lang='en') }}" class="btn btn-outline-primary">English</a>
+                            <a href="{{ url_for('main.switch_language', lang='zh_CN') }}" class="btn btn-outline-primary">简体中文</a>
+                            <a href="{{ url_for('main.switch_language', lang='zh_TW') }}" class="btn btn-outline-primary">繁體中文</a>
+                        </div>
+                        
+                        <h5 class="mt-3">纯链接 (便于调试):</h5>
+                        <ul>
+                            <li><a href="/switch_language/en">切换到英文</a></li>
+                            <li><a href="/switch_language/zh_CN">切换到简体中文</a></li>
+                            <li><a href="/switch_language/zh_TW">切换到繁体中文</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="{{ url_for('main.index') }}" class="btn btn-secondary">返回首页</a>
+                        <a href="{{ url_for('main.session_tools') }}" class="btn btn-info">会话工具</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2>会话工具</h2>
+                </div>
+                <div class="card-body">
+                    <h4>当前会话内容:</h4>
+                    <div class="alert alert-info mb-4">
+                        <pre>{{ session_data }}</pre>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">手动设置会话变量</div>
+                                <div class="card-body">
+                                    <form action="#" method="get" id="sessionForm">
+                                        <div class="mb-3">
+                                            <label for="key" class="form-label">键名</label>
+                                            <input type="text" class="form-control" id="key" name="key" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="value" class="form-label">值</label>
+                                            <input type="text" class="form-control" id="value" name="value" required>
+                                        </div>
+                                        <button type="button" onclick="setSession()" class="btn btn-primary">设置</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">快捷操作</div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <a href="{{ url_for('main.session_set', key='lang', value='en') }}" class="btn btn-sm btn-outline-primary">设置语言为英文</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="{{ url_for('main.session_set', key='lang', value='zh_CN') }}" class="btn btn-sm btn-outline-primary">设置语言为简体中文</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="{{ url_for('main.session_set', key='lang', value='zh_TW') }}" class="btn btn-sm btn-outline-primary">设置语言为繁体中文</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="{{ url_for('main.session_clear') }}" class="btn btn-sm btn-outline-danger">清空会话</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <a href="{{ url_for('main.language_test') }}" class="btn btn-secondary">返回语言测试页面</a>
+                        <a href="{{ url_for('main.index') }}" class="btn btn-secondary ms-2">返回首页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function setSession() {
+    const key = document.getElementById('key').value;
+    const value = document.getElementById('value').value;
+    if (key && value) {
+        window.location.href = `/session_set/${key}/${value}`;
+    }
+}
+</script>
+{% endblock %} 

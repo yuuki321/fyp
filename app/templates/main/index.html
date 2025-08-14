@@ -1,0 +1,351 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- 最近项目卡片 -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title">
+                <i class="fas fa-history"></i> <span data-i18n="Recent Projects">最近项目</span>
+            </h5>
+            <button class="btn btn-outline-gold btn-sm" data-bs-toggle="modal" data-bs-target="#allProjectsModal">
+                <span data-i18n="View All">查看全部</span>
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row recent-projects">
+                {% for project in recent_projects %}
+                <div class="col-md-3">
+                    <div class="project-card">
+                        <div class="project-info">
+                            <h6>{{ project.title }}</h6>
+                            <p class="text-muted">{{ project.created_at.strftime('%Y-%m-%d') }}</p>
+                        </div>
+                        <div class="project-actions">
+                            <button class="btn btn-sm btn-outline-gold" onclick="loadProject({{ project.id }})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 模式选择器 -->
+    <div class="mode-selector text-center mb-4">
+        <div class="btn-group" role="group">
+            <button onclick="switchMode('simple')" class="btn btn-primary active" id="simpleMode">
+                <i class="fas fa-magic"></i> <span data-i18n="Simple Mode">简单模式</span>
+            </button>
+            <button onclick="switchMode('advanced')" class="btn btn-primary" id="advancedMode">
+                <i class="fas fa-sliders-h"></i> <span data-i18n="Advanced Mode">高级模式</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 简单模式 -->
+    <div id="simpleForm" class="mode-form">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title" data-i18n="Music Generation Parameters">音乐生成参数</h5>
+            </div>
+            <div class="card-body">
+                <form id="musicGenerationForm">
+                    <!-- 基本参数 -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label" data-i18n="Music Style">音乐风格</label>
+                                <select class="form-select" name="style" required>
+                                    <option value="pop" data-i18n="Pop">流行</option>
+                                    <option value="rock" data-i18n="Rock">摇滚</option>
+                                    <option value="classical" data-i18n="Classical">古典</option>
+                                    <option value="jazz" data-i18n="Jazz">爵士</option>
+                                    <option value="electronic" data-i18n="Electronic">电子</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" data-i18n="Mood">情绪</label>
+                                <select class="form-select" name="mood" required>
+                                    <option value="happy" data-i18n="Happy">快乐</option>
+                                    <option value="sad" data-i18n="Sad">悲伤</option>
+                                    <option value="energetic" data-i18n="Energetic">充满活力</option>
+                                    <option value="relaxed" data-i18n="Relaxed">放松</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- 和弦进行设置 -->
+                            <div class="mb-3">
+                                <label class="form-label" data-i18n="Chord Progression">和弦进行</label>
+                                <div class="chord-selector">
+                                    <select class="form-select mb-2" name="chord_progression">
+                                        <option value="I-IV-V-I">I-IV-V-I (<span data-i18n="Classic">经典</span>)</option>
+                                        <option value="ii-V-I">ii-V-I (<span data-i18n="Jazz">爵士</span>)</option>
+                                        <option value="I-V-vi-IV">I-V-vi-IV (<span data-i18n="Pop">流行</span>)</option>
+                                        <option value="custom" data-i18n="Custom">自定义</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 时长和速度控制 -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label" data-i18n="Duration (seconds)">时长（秒）</label>
+                                <input type="range" class="form-range" name="duration" 
+                                       min="30" max="300" value="120" required>
+                                <div class="duration-display text-center">
+                                    <span id="durationValue">120</span> sec
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label" data-i18n="Tempo">速度</label>
+                                <input type="range" class="form-range" name="tempo" 
+                                       min="60" max="200" value="120" required>
+                                <div class="text-center">
+                                    <span id="tempoValue">120 BPM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 在简单模式表单中，在提交按钮之前添加文件上传部分 -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card bg-dark">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-3">
+                                        <i class="fas fa-upload"></i> {{ _('Upload Incomplete Track (Optional)') }}
+                                    </h6>
+                                    <div class="file-upload-wrapper">
+                                        <div class="custom-file-upload">
+                                            <input type="file" class="custom-file-input" id="incomplete_track" name="incomplete_track" 
+                                                   accept=".mid,.midi,.mp3,.wav"
+                                                   onchange="handleFileSelect(this)">
+                                            <label class="custom-file-label btn btn-outline-gold" for="incomplete_track">
+                                                <i class="fas fa-cloud-upload-alt"></i> {{ _('Choose File') }}
+                                            </label>
+                                            <span class="selected-file-name ms-2">{{ _('No file chosen') }}</span>
+                                        </div>
+                                        <div class="upload-info mt-2 small text-muted">
+                                            {{ _('Supported formats: MIDI, MP3, WAV') }}
+                                        </div>
+                                        <div id="filePreview" class="mt-2 d-none">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <i class="fas fa-music"></i>
+                                                <span class="file-name"></span>
+                                                <button type="button" class="btn btn-sm btn-outline-danger ms-auto" 
+                                                        onclick="clearFileInput()">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <div class="progress mt-2" style="height: 3px;">
+                                                <div class="progress-bar bg-gold" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 提交按钮 -->
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" onclick="createMusic('simple')">
+                            <i class="fas fa-magic"></i> <span data-i18n="Generate Music">生成音乐</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 高级模式 -->
+    <div id="advancedForm" class="mode-form hidden">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title mb-0">{{ _('Advanced Mode') }}</h2>
+            </div>
+            <div class="card-body">
+                <div class="daw-interface">
+                    <!-- 工具栏 -->
+                    <div class="toolbar mb-3 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="btn-group me-3">
+                                <button class="btn btn-outline-primary" title="{{ _('Play') }}">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <button class="btn btn-outline-primary" title="{{ _('Stop') }}">
+                                    <i class="fas fa-stop"></i>
+                                </button>
+                                <button class="btn btn-outline-primary" title="{{ _('Record') }}">
+                                    <i class="fas fa-record-vinyl"></i>
+                                </button>
+                            </div>
+                            <div class="btn-group me-3">
+                                <button class="btn btn-outline-secondary" title="{{ _('Undo') }}">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" title="{{ _('Redo') }}">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex align-items-center ms-3">
+                                <span class="text-light me-2">120 BPM</span>
+                                <input type="number" class="form-control form-control-sm" style="width: 80px" value="120" min="40" max="240">
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-outline-success" title="{{ _('Save Project') }}">
+                                <i class="fas fa-save"></i>
+                            </button>
+                            <button class="btn btn-outline-info ms-2" title="{{ _('Export') }}">
+                                <i class="fas fa-file-export"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 主要工作区 -->
+                    <div class="row">
+                        <!-- 左侧面板 -->
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-header">{{ _('Instruments & Effects') }}</div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item list-group-item-action">{{ _('Piano') }}</a>
+                                        <a href="#" class="list-group-item list-group-item-action">{{ _('Strings') }}</a>
+                                        <a href="#" class="list-group-item list-group-item-action">{{ _('Drums') }}</a>
+                                        <a href="#" class="list-group-item list-group-item-action">{{ _('Synthesizer') }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 主时间线区域 -->
+                        <div class="col-md-9">
+                            <div class="timeline-container">
+                                <div class="timeline-header">
+                                    <!-- 时间标记 -->
+                                    <div class="time-markers"></div>
+                                </div>
+                                <div class="tracks-container">
+                                    <!-- 音轨将在这里动态添加 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 所有项目模态框 -->
+<div class="modal fade" id="allProjectsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ _('All Projects') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{ _('Name') }}</th>
+                                <th>{{ _('Created') }}</th>
+                                <th>{{ _('Style') }}</th>
+                                <th>{{ _('Actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in all_projects %}
+                            <tr>
+                                <td>{{ project.title }}</td>
+                                <td>{{ project.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ project.style }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-gold" 
+                                            onclick="loadProject({{ project.id }})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" 
+                                            onclick="deleteProject({{ project.id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// 更新持续时间显示
+function updateDurationValue(value) {
+    document.getElementById('durationInput').value = value;
+}
+
+function updateDurationSlider(value) {
+    const slider = document.querySelector('input[name="duration"]');
+    slider.value = value;
+}
+
+// 和弦进行选择逻辑
+document.querySelector('select[name="chord_progression"]').addEventListener('change', function() {
+    const customChords = document.querySelector('.custom-chords');
+    if (this.value === 'custom') {
+        customChords.classList.remove('hidden');
+    } else {
+        customChords.classList.add('hidden');
+    }
+});
+
+// 预览和弦进行
+function previewChords() {
+    const chords = document.querySelector('.custom-chords input').value;
+    // 这里添加和弦预览的逻辑
+    console.log('Preview chords:', chords);
+}
+
+// 加载项目
+function loadProject(projectId) {
+    fetch(`/project/${projectId}`)
+        .then(response => response.json())
+        .then(data => {
+            // 填充表单数据
+            // ...
+        });
+}
+
+// 删除项目
+function deleteProject(projectId) {
+    if (confirm('{{ _("Are you sure you want to delete this project?") }}')) {
+        fetch(`/project/${projectId}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                location.reload();
+            }
+        });
+    }
+}
+</script>
+{% endblock %} 

@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- 项目信息卡片 -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center bg-dark text-light">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-music"></i> {{ project.title }}
+                    </h5>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-primary" onclick="playMusic()">
+                            <i class="fas fa-play"></i> {{ _('Play') }}
+                        </button>
+                        <button class="btn btn-sm btn-success" onclick="downloadMusic()">
+                            <i class="fas fa-download"></i> {{ _('Download') }}
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProject()">
+                            <i class="fas fa-trash"></i> {{ _('Delete') }}
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- 音频播放器 -->
+                    <div class="audio-player mb-4">
+                        <audio id="audioPlayer" class="w-100" controls preload="auto">
+                            <source src="{{ url_for('static', filename=project.audio_path.replace('\\', '/')) }}" type="audio/mpeg">
+                            {{ _('Your browser does not support the audio element.') }}
+                        </audio>
+                    </div>
+
+                    <!-- 项目详情 -->
+                    <div class="project-details">
+                        <h6>{{ _('Project Details') }}</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <th>{{ _('Style') }}</th>
+                                        <td>{{ project.style }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ _('Duration') }}</th>
+                                        <td>{{ project.duration }} {{ _('seconds') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ _('Created') }}</th>
+                                        <td>{{ project.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ _('Chord Progression') }}</th>
+                                        <td>{{ project.chord_progression or _('Not specified') }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MIDI 可视化 -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ _('MIDI Visualization') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div id="midiVisualization" class="midi-canvas">
+                        <!-- MIDI 可视化将通过 JavaScript 渲染 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 侧边栏 -->
+        <div class="col-md-4">
+            <!-- 导出选项 -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ _('Export Options') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <button class="list-group-item list-group-item-action" onclick="exportAs('midi')">
+                            <i class="fas fa-file-audio"></i> {{ _('Export as MIDI') }}
+                        </button>
+                        <button class="list-group-item list-group-item-action" onclick="exportAs('mp3')">
+                            <i class="fas fa-music"></i> {{ _('Export as MP3') }}
+                        </button>
+                        <button class="list-group-item list-group-item-action" onclick="exportAs('wav')">
+                            <i class="fas fa-wave-square"></i> {{ _('Export as WAV') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分享选项 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ _('Share') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="shareLink" 
+                               value="{{ url_for('main.project_detail', project_id=project.id, _external=True) }}" 
+                               readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyShareLink()">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="makePublic" 
+                               {% if project.is_public %}checked{% endif %}
+                               onchange="togglePublic()">
+                        <label class="form-check-label" for="makePublic">
+                            {{ _('Make Project Public') }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// 音频播放器实例
+let audioPlayer = null;
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', function() {
+    audioPlayer = document.getElementById('audioPlayer');
+    
+    // 添加错误处理
+    audioPlayer.addEventListener('error', function(e) {
+        console.error('Error loading audio:', e);
+        alert('{{ _("Error loading audio file") }}');
+    });
+});
+
+function playMusic() {
+    if (audioPlayer) {
+        if (audioPlayer.paused) {
+            audioPlayer.play().catch(function(error) {
+                console.error('Error playing audio:', error);
+                alert('{{ _("Error playing audio file") }}');
+            });
+        } else {
+            audioPlayer.pause();
+        }
+    }
+}
+
+function downloadMusic() {
+    window.location.href = "{{ url_for('main.download_project', project_id=project.id) }}";
+}
+
+function deleteProject() {
+    if (confirm("{{ _('Are you sure you want to delete this project?') }}")) {
+        fetch("{{ url_for('main.delete_project', project_id=project.id) }}", {
+            method: 'DELETE',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                window.location.href = "{{ url_for('main.index') }}";
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ _("Error deleting project") }}');
+        });
+    }
+}
+
+function exportAs(format) {
+    window.location.href = `{{ url_for('main.export_project', project_id=project.id) }}?format=${format}`;
+}
+
+function copyShareLink() {
+    const shareLink = document.getElementById('shareLink');
+    shareLink.select();
+    document.execCommand('copy');
+    alert("{{ _('Link copied to clipboard!') }}");
+}
+
+function togglePublic() {
+    const isPublic = document.getElementById('makePublic').checked;
+    fetch("{{ url_for('main.toggle_project_visibility', project_id=project.id) }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ is_public: isPublic })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status !== 'success') {
+            alert(data.message);
+            document.getElementById('makePublic').checked = !isPublic;
+        }
+    });
+}
+
+// 初始化 MIDI 可视化
+document.addEventListener('DOMContentLoaded', function() {
+    // 这里添加 MIDI 可视化的初始化代码
+});
+</script>
+{% endblock %} 

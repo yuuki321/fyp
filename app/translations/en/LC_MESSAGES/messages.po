@@ -1,0 +1,121 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-06-15 12:00+0000\n"
+"PO-Revision-Date: 2023-06-15 12:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: en <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "AI Music Generator"
+msgstr "AI Music Generator"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "My Projects"
+msgstr "My Projects"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Register"
+msgstr "Register"
+
+msgid "Change Password"
+msgstr "Change Password"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Hello World"
+msgstr "Hello World"
+
+msgid "All rights reserved."
+msgstr "All rights reserved."
+
+msgid "Current Password"
+msgstr "Current Password"
+
+msgid "New Password"
+msgstr "New Password"
+
+msgid "Confirm New Password"
+msgstr "Confirm New Password"
+
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "New passwords do not match"
+msgstr "New passwords do not match"
+
+msgid "An error occurred while changing password"
+msgstr "An error occurred while changing password"
+
+msgid "Verify you are not a robot"
+msgstr "Verify you are not a robot"
+
+msgid "Please complete the reCAPTCHA verification above."
+msgstr "Please complete the reCAPTCHA verification above."
+
+msgid "Please complete the reCAPTCHA verification to prove you are not a robot."
+msgstr "Please complete the reCAPTCHA verification to prove you are not a robot."
+
+msgid "Congratulations, you are now a registered user!"
+msgstr "Congratulations, you are now a registered user!"
+
+msgid "Language changed successfully"
+msgstr "Language changed successfully"
+
+msgid "Unsupported language"
+msgstr "Unsupported language"
+
+msgid "Username must be between 3 and 64 characters."
+msgstr "Username must be between 3 and 64 characters."
+
+msgid "Please use a valid email address."
+msgstr "Please use a valid email address."
+
+msgid "Password must be at least 8 characters long."
+msgstr "Password must be at least 8 characters long."
+
+msgid "Please enter the same password again to confirm."
+msgstr "Please enter the same password again to confirm."
+
+msgid "Already have an account?"
+msgstr "Already have an account?"
+
+msgid "Sign in"
+msgstr "Sign in"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "MIDI file not available for this project"
+msgstr "MIDI file not available for this project"
+
+msgid "MIDI file not found, please regenerate the music"
+msgstr "MIDI file not found, please regenerate the music"
+
+msgid "Audio file not available for this project"
+msgstr "Audio file not available for this project"
+
+msgid "Audio file not found, please regenerate the music"
+msgstr "Audio file not found, please regenerate the music" 

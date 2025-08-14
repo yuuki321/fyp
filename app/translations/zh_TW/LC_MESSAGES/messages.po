@@ -1,0 +1,160 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-06-15 12:00+0000\n"
+"PO-Revision-Date: 2023-06-15 12:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: zh_TW <LL@li.org>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "AI Music Generator"
+msgstr "AI音樂生成器"
+
+msgid "Home"
+msgstr "首頁"
+
+msgid "My Projects"
+msgstr "我的專案"
+
+msgid "Language"
+msgstr "語言"
+
+msgid "Change Password"
+msgstr "修改密碼"
+
+msgid "Current Password"
+msgstr "當前密碼"
+
+msgid "New Password"
+msgstr "新密碼"
+
+msgid "Confirm New Password"
+msgstr "確認新密碼"
+
+msgid "Confirm Password"
+msgstr "確認密碼"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Login"
+msgstr "登入"
+
+msgid "Register"
+msgstr "註冊"
+
+msgid "Logout"
+msgstr "登出"
+
+msgid "All rights reserved."
+msgstr "版權所有"
+
+msgid "New passwords do not match"
+msgstr "新密碼不匹配"
+
+msgid "An error occurred while changing password"
+msgstr "修改密碼時發生錯誤"
+
+msgid "AI Music Creator"
+msgstr "AI音樂創作器"
+
+msgid "Simple Mode"
+msgstr "簡單模式"
+
+msgid "Advanced Mode"
+msgstr "進階模式"
+
+msgid "Music Style"
+msgstr "音樂風格"
+
+msgid "Pop"
+msgstr "流行"
+
+msgid "Rock"
+msgstr "搖滾"
+
+msgid "Classical"
+msgstr "古典"
+
+msgid "Create Music"
+msgstr "創作音樂"
+
+msgid "Tempo (BPM)"
+msgstr "速度 (BPM)"
+
+msgid "Key"
+msgstr "調式"
+
+msgid "Music created in simple mode"
+msgstr "簡單模式下的音樂已創建"
+
+msgid "Music created in advanced mode"
+msgstr "進階模式下的音樂已創建"
+
+msgid "Hello World"
+msgstr "你好，世界"
+
+msgid "Verify you are not a robot"
+msgstr "驗證您不是機器人"
+
+msgid "Please complete the reCAPTCHA verification above."
+msgstr "請完成上方的驗證碼驗證。"
+
+msgid "Please complete the reCAPTCHA verification to prove you are not a robot."
+msgstr "請完成驗證碼驗證以證明您不是機器人。"
+
+msgid "Congratulations, you are now a registered user!"
+msgstr "恭喜，您已成功註冊！"
+
+msgid "Language changed successfully"
+msgstr "語言切換成功"
+
+msgid "Unsupported language"
+msgstr "不支持的語言"
+
+msgid "Username must be between 3 and 64 characters."
+msgstr "用戶名長度需在3到64個字符之間。"
+
+msgid "Please use a valid email address."
+msgstr "請使用有效的電子郵箱地址。"
+
+msgid "Password must be at least 8 characters long."
+msgstr "密碼長度至少需要8個字符。"
+
+msgid "Please enter the same password again to confirm."
+msgstr "請再次輸入相同的密碼進行確認。"
+
+msgid "Already have an account?"
+msgstr "已有賬號？"
+
+msgid "Sign in"
+msgstr "登入"
+
+msgid "Username"
+msgstr "用戶名"
+
+msgid "Email"
+msgstr "電子郵箱"
+
+msgid "Password"
+msgstr "密碼"
+
+msgid "MIDI file not available for this project"
+msgstr "此專案沒有可用的MIDI文件"
+
+msgid "MIDI file not found, please regenerate the music"
+msgstr "找不到MIDI文件，請重新生成音樂"
+
+msgid "Audio file not available for this project"
+msgstr "此專案沒有可用的音頻文件"
+
+msgid "Audio file not found, please regenerate the music"
+msgstr "找不到音頻文件，請重新生成音樂" 
