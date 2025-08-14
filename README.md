@@ -214,4 +214,4 @@ MIT License. See LICENSE for details.
 
 - GitHub: https://github.com/yuuki321/fyp
 
-Click here to see the final year report: https://github.com/yuuki321/fyp/fyp_finalreport.pdf
+Click [here]{https://yuuki321.github.io/fyp/fyp_finalreport.pdf} to see the final year report
