@@ -2,7 +2,7 @@
 
 A web platform for algorithmic music composition that balances creative control with intelligent automation. Users can generate original music by choosing style, mood, tempo, chord progressions, and instruments—or upload an unfinished MIDI to continue and complete it. The project supports multilingual UI (English, Traditional Chinese, Simplified Chinese) and exports to MIDI, MP3, and WAV for seamless DAW workflows.
 
-Click here to see the final year report: https://github.com/yuuki321/fyp/fyp_finalreport.pdf
+Click [here](https://yuuki321.github.io/fyp/fyp_finalreport.pdf) to see the final year report
 
 ## Highlights
 
@@ -212,6 +212,4 @@ MIT License. See LICENSE for details.
 
 ## Contact
 
-- GitHub: https://github.com/yuuki321/fyp
-
-Click [here](https://yuuki321.github.io/fyp/fyp_finalreport.pdf) to see the final year report
+GitHub: https://github.com/yuuki321/fyp
